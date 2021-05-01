@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Todo-MVVM</string>
+
+<!--    <string name="google_id">171216409461-o1g7emg9675s157jufn5m2vqfops5dtl.apps.googleusercontent.com</string>-->
+    <string name="google_id">377130884828-1mr5jiajgdooklmmciu7mvjqc508u33q.apps.googleusercontent.com</string>
+
 </resources>

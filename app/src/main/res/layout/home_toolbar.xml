@@ -23,7 +23,8 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_menubar" />
+                android:src="@drawable/ic_menubar"
+                android:id="@+id/IV_Menu"/>
 
         </LinearLayout>
 
