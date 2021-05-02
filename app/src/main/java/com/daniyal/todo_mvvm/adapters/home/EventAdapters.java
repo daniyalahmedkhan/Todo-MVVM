@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -44,6 +45,7 @@ public class EventAdapters extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
         TextView txt_title, txt_desc, txt_time , txt_midday;
         ImageView IV_Priority;
+        CardView CV_EventItem;
 
         EventViewHolder(View itemView) {
             super(itemView);
@@ -52,6 +54,7 @@ public class EventAdapters extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             txt_time = (TextView) itemView.findViewById(R.id.TV_Time);
             txt_midday = (TextView) itemView.findViewById(R.id.TV_Midday);
             IV_Priority = (ImageView) itemView.findViewById(R.id.IV_Priority);
+            CV_EventItem = (CardView) itemView.findViewById(R.id.CV_EventItem);
         }
 
     }

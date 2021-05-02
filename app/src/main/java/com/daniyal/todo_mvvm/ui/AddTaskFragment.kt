@@ -22,7 +22,7 @@ import kotlinx.android.synthetic.main.other_toolbar.*
 import java.util.*
 
 @AndroidEntryPoint
-class AddEditTaskFragment : Fragment(), DatePickerDialog.OnDateSetListener,
+class AddTaskFragment : Fragment(), DatePickerDialog.OnDateSetListener,
     TimePickerDialog.OnTimeSetListener {
 
     private lateinit var addTaskFragmentBinding: AddTaskFragmentBinding
@@ -31,13 +31,9 @@ class AddEditTaskFragment : Fragment(), DatePickerDialog.OnDateSetListener,
 
 
     companion object {
-        var title: String = ""
-        var isAddTask: Boolean = false
 
-        fun newInstance(title: String , isAddTask: Boolean): AddEditTaskFragment {
-            this.title = title
-            this.isAddTask = isAddTask
-            return AddEditTaskFragment()
+        fun newInstance(): AddTaskFragment {
+            return AddTaskFragment()
         }
     }
 
@@ -58,7 +54,7 @@ class AddEditTaskFragment : Fragment(), DatePickerDialog.OnDateSetListener,
         super.onViewCreated(view, savedInstanceState)
 
         toolbar.setNavigationIcon(R.drawable.back)
-        toolbar.setTitle(title)
+        toolbar.setTitle("Add Task")
         toolbar.setNavigationOnClickListener {
             parentFragmentManager.popBackStack()
         }

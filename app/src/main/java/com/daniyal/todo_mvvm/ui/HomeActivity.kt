@@ -36,6 +36,7 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private val TAG = "FIRST"
     val todoItemViewModel: TodoItemViewModel by viewModels()
     private val items: MutableList<ListItem> = ArrayList()
+    private lateinit var homeItemsAdapter: HomeItemsAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -82,7 +83,11 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                         toast("No Item Found").setGravity(Gravity.CENTER, 0, 0)
                     }
 
-                    RV_TodoItems.adapter = EventAdapters(items, this)
+                    homeItemsAdapter =
+                        HomeItemsAdapter(items, this) { itemDto: ListItem, position: Int ->
+                            position
+                        }
+                    RV_TodoItems.adapter = homeItemsAdapter
 
                 }
 
@@ -162,7 +167,7 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         val id = item.itemId
         if (id == R.id.new_task) {
-            openDetailFragment(AddEditTaskFragment.newInstance("Add Task" , true))
+            openDetailFragment(AddTaskFragment.newInstance())
         } else if (id == R.id.logout) {
             Toast.makeText(this, "Galelry", Toast.LENGTH_SHORT).show()
         }
