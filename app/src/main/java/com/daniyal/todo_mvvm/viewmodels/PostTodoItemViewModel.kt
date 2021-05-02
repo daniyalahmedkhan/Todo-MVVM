@@ -51,14 +51,24 @@ class PostTodoItemViewModel @ViewModelInject constructor(
         } else {
 
             val todoItemResponse = TodoItemResponse(
-                if (isAddTask) null else taskId , title.value.toString(), desc.value.toString(), category.value.toString(),
+                if (isAddTask) null else taskId,
+                title.value.toString(),
+                desc.value.toString(),
+                category.value.toString(),
                 GeneralHelper.convertDateIntoTimeStamp(dateTime.value.toString()),
-                priority.value.toString(), PrefsHelper.getString(Constants.userID), false
+                priority.value.toString(),
+                PrefsHelper.getString(Constants.userID),
+                false
             )
 
-            if (isAddTask) postTodoItem(todoItemResponse) else editTodoItem(taskId , todoItemResponse)
+            if (isAddTask) postTodoItem(todoItemResponse) else editTodoItem(
+                taskId,
+                todoItemResponse
+            )
         }
     }
+
+
 
     private fun postTodoItem(todoItemResponse: TodoItemResponse) {
         itemState.value = ResponseEvent.Loading
@@ -79,12 +89,12 @@ class PostTodoItemViewModel @ViewModelInject constructor(
         }
     }
 
-    private fun editTodoItem(id: Int? , todoItemResponse: TodoItemResponse) {
+    private fun editTodoItem(id: Int?, todoItemResponse: TodoItemResponse) {
         itemState.value = ResponseEvent.Loading
         viewModelScope.launch {
             Dispatchers.IO
             try {
-                val response = todoItemRepo.editItemOnServer(id , todoItemResponse)
+                val response = todoItemRepo.editItemOnServer(id, todoItemResponse)
                 if (response.isSuccessful) {
                     itemState.value = ResponseEvent.Success(response.body())
                 } else {
@@ -97,5 +107,7 @@ class PostTodoItemViewModel @ViewModelInject constructor(
             }
         }
     }
+
+
 
 }

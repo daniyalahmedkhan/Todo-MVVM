@@ -14,4 +14,8 @@ interface RetrofitInterface {
 
     @PUT("todos/{id}")
     suspend fun editTodoItem(@Path("id") id: Int?, @Body todoItemResponse: TodoItemResponse): Response<TodoItemResponse>
+
+    @DELETE("todos/{id}")
+    suspend fun deleteTodoItem(@Path("id") id: Int?): Response<TodoItemResponse>
+
 }

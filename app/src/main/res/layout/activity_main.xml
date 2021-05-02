@@ -18,8 +18,7 @@
     android:fitsSystemWindows="true"
     tools:openDrawer="start">
 
-    <RelativeLayout
-        android:id="@+id/container"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
@@ -30,14 +29,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/RV_TodoItems"
+        <FrameLayout
+            android:id="@+id/home_container"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/toolbar" />
+            android:layout_height="match_parent"
+            android:clickable="true"
+            android:focusable="true" />
 
-
-    </RelativeLayout>
+    </LinearLayout>
 
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/nav_view"

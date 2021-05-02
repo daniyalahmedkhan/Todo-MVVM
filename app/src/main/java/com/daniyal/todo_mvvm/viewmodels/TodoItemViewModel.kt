@@ -44,4 +44,27 @@ class TodoItemViewModel @ViewModelInject constructor(private val todoItemRepo: T
         }
     }
 
+
+    fun deleteTodoItem(id: Int?) {
+        itemState.value = ResponseEvent.Loading
+        viewModelScope.launch {
+            Dispatchers.IO
+            try {
+                val response = todoItemRepo.deleteItemOnServer(id)
+                if (response.isSuccessful) {
+                    //itemState.value = ResponseEvent.Success(response.body())
+                } else {
+                    val jObjError = JSONObject(response.errorBody()!!.string())
+                    val message = GeneralHelper.parseFailureJson((jObjError))
+                    itemState.value = ResponseEvent.Failure(message)
+                }
+
+            } catch (e: Exception) {
+                itemState.value = ResponseEvent.Failure(e.message)
+            }
+        }
+    }
+
+
+
 }

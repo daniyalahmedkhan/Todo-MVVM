@@ -18,4 +18,10 @@ class TodoItemRepo @Inject constructor(private val baseApiInterface: RetrofitInt
     suspend fun editItemOnServer(id: Int? , todoItemResponse: TodoItemResponse): Response<TodoItemResponse> {
         return baseApiInterface.editTodoItem(id, todoItemResponse)
     }
+
+    suspend fun deleteItemOnServer(id: Int? ): Response<TodoItemResponse> {
+        return baseApiInterface.deleteTodoItem(id)
+    }
+
+
 }

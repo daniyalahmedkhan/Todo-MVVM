@@ -40,9 +40,7 @@ import kotlin.collections.ArrayList
 class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
     private val TAG = "FIRST"
-    val todoItemViewModel: TodoItemViewModel by viewModels()
-    private val items: MutableList<ListItem> = ArrayList()
-    private lateinit var homeItemsAdapter: HomeItemsAdapter
+
     private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -53,122 +51,10 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
        * */
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
 
-
-        Pri.getClaimStatus(9);
-
-        todoItemViewModel.itemState.observe(this, Observer {
-
-            when (it) {
-
-                is ResponseEvent.Loading -> {
-                }
-
-                is ResponseEvent.Failure -> {
-                }
-
-                is ResponseEvent.Success<List<TodoItemResponse>> -> {
-                    if (it.data!!.size > 0) {
-                        val events: Map<Date, List<Event>> = toMap(loadEvents_(it.data))
-
-                        for (date in events.keys) {
-                            val header = HeaderItem(date)
-                            items.add(header)
-                            for (event in events[date]!!) {
-                                val item = EventItem(
-                                    event.taskID,
-                                    event.title,
-                                    event.desc,
-                                    event.category,
-                                    event.priority,
-                                    event.user_id,
-                                    event.isCompleted,
-                                    event.getDate().toString(),
-                                    event.hour
-                                )
-                                items.add(item)
-
-                            }
-                        }
-
-
-                    } else {
-                        toast("No Item Found").setGravity(Gravity.CENTER, 0, 0)
-                    }
-
-                    homeItemsAdapter =
-                        HomeItemsAdapter(items, this) { itemDto: ListItem, position: Int ->
-                           openDetailFragment(Add_EditTaskFragment.newInstance((itemDto as EventItem)))
-
-                        }
-                    binding.RVTodoItems.adapter = homeItemsAdapter
-
-                }
-
-            }
-
-        })
-
-        //  val events: Map<Date, List<Event>> = toMap(loadEvents())
-
-
-        //val recyclerView = findViewById<View>(R.id.lst_items) as RecyclerView
-        RV_TodoItems.layoutManager = LinearLayoutManager(this)
-//        RV_TodoItems.layoutManager
-
         drawerSetup()
 
+        openDetailFragment(HomeFragment.newInstance())
 
-    }
-
-    @NonNull
-    private fun loadEvents_(list: List<TodoItemResponse>?): List<Event> {
-        val events: MutableList<Event> = ArrayList()
-        for (i in list!!.iterator()) {
-            events.add(
-                Event(
-                    i.id,
-                    i.title,
-                    i.description,
-                    i.category,
-                    i.priority,
-                    i.user_id,
-                    i.isCompleted,
-                    DateUtils.getDate(i.timestamp),
-                    DateUtils.getHour(i.timestamp)
-
-                )
-            )
-        }
-        return events.reversed()
-    }
-
-//    @NonNull
-//    private fun loadEvents(): List<Event> {
-//        val events: MutableList<Event> = ArrayList()
-//        for (i in 1..49) {
-//            events.add(Event("event $i", buildRandomDateInCurrentMonth()!!))
-//        }
-//        return events
-//    }
-
-    private fun buildRandomDateInCurrentMonth(): Date? {
-        val random = Random()
-        return com.daniyal.todo_mvvm.utilities.DateUtils.buildDate(random.nextInt(31) + 1)
-    }
-
-    @NonNull
-    private fun toMap(@NonNull events: List<Event>): Map<Date, List<Event>> {
-        val map: MutableMap<Date, MutableList<Event>> =
-            TreeMap()
-        for (event in events) {
-            var value = map[event.getDate()]
-            if (value == null) {
-                value = ArrayList()
-                map[event.getDate()] = value
-            }
-            value.add(event)
-        }
-        return map
     }
 
 
@@ -196,8 +82,7 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 * Fragment Management
 * */
     private fun openDetailFragment(fragment: Fragment) {
-        supportFragmentManager.beginTransaction().add(R.id.container, fragment)
-            .addToBackStack(if (supportFragmentManager.backStackEntryCount == 0) TAG else null)
+        supportFragmentManager.beginTransaction().add(R.id.home_container, fragment)
             .commit()
     }
 
@@ -219,13 +104,12 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     override fun onPause() {
         super.onPause()
-        println("##################################")
+        println("Activity Pause ##################################")
     }
 
     override fun onResume() {
         super.onResume()
-        println("##################################")
-        if (isItemUpdate) todoItemViewModel.getTodoItems()
+        println("Activity Resume ##################################")
     }
 
 

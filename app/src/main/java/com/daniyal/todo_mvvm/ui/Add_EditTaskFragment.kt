@@ -74,6 +74,7 @@ class Add_EditTaskFragment : Fragment(), DatePickerDialog.OnDateSetListener,
         toolbar.setTitle("Add Task")
         toolbar.setNavigationOnClickListener {
             requireActivity().getSupportFragmentManager().popBackStack();
+            openDetailFragment(HomeFragment.newInstance())
         }
 
 
@@ -97,7 +98,8 @@ class Add_EditTaskFragment : Fragment(), DatePickerDialog.OnDateSetListener,
                 }
                 is ResponseEvent.Success<TodoItemResponse> -> {
                     Constants.isItemUpdate = true
-                    requireActivity().getSupportFragmentManager().popBackStack()
+                    requireActivity().getSupportFragmentManager().popBackStack();
+                    openDetailFragment(HomeFragment.newInstance())
                 }
 
             }
@@ -127,6 +129,15 @@ class Add_EditTaskFragment : Fragment(), DatePickerDialog.OnDateSetListener,
         )}"
         addTaskFragmentBinding.ETDateTime.setText(dateTime)
 
+    }
+
+    /*
+* Fragment Management
+* */
+    private fun openDetailFragment(fragment: Fragment) {
+        requireActivity().supportFragmentManager.beginTransaction().replace(R.id.home_container, fragment)
+            .addToBackStack(if (requireActivity().supportFragmentManager.backStackEntryCount == 0) fragment.tag else null)
+            .commit()
     }
 
 }
