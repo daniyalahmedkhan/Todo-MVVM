@@ -4,24 +4,31 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
 import com.daniyal.todo_mvvm.R
+import com.daniyal.todo_mvvm.data.model.remote.ResponseEvent
 import com.daniyal.todo_mvvm.databinding.ActivityLoginBinding
 import com.daniyal.todo_mvvm.utilities.Constants
 import com.daniyal.todo_mvvm.utilities.PrefsHelper
+import com.daniyal.todo_mvvm.viewmodels.LoginViewModel
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
+import com.google.android.gms.common.api.Response
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
+import dagger.hilt.android.AndroidEntryPoint
 import org.jetbrains.anko.intentFor
 import org.jetbrains.anko.newTask
 
+@AndroidEntryPoint
 class LoginActivity : AppCompatActivity() {
 
-
+    private val loginViewModel: LoginViewModel by viewModels()
     private lateinit var binding: ActivityLoginBinding
     private lateinit var googleSignInClient: GoogleSignInClient
     private var firebaseAuth = FirebaseAuth.getInstance()
@@ -31,6 +38,7 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_login)
+        binding.viewmodel = loginViewModel
 
         // Configure Google sign in
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -48,6 +56,22 @@ class LoginActivity : AppCompatActivity() {
             startActivity(intentFor<HomeActivity>().newTask())
             finish()
         }
+
+        loginViewModel.itemState.observe(this, Observer {
+
+            when (it) {
+                is ResponseEvent.Loading -> {
+                }
+                is ResponseEvent.Failure -> {
+                }
+                is ResponseEvent.Success<String> -> {
+                    if (it.data.equals("200")) {
+                        startActivity(intentFor<HomeActivity>().newTask())
+                        finish()
+                    }
+                }
+            }
+        })
     }
 
     private fun signInGoogle() {

@@ -6,11 +6,14 @@ import android.text.format.DateUtils
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.ImageView
-import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.daniyal.todo_mvvm.R
+import com.daniyal.todo_mvvm.ui.HomeActivity
+import org.jetbrains.anko.intentFor
+import org.jetbrains.anko.newTask
 import org.json.JSONObject
+import java.text.DateFormat
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
@@ -70,6 +73,34 @@ class GeneralHelper {
                 context.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
             imm.hideSoftInputFromWindow(view.getWindowToken(), 0)
         }
+
+        fun dateTimeFormatter(int: Int) : String{
+            var str: String = ""
+            str = if (int < 10) {
+                "0$int"
+            } else {
+                int.toString()
+            }
+
+            return str
+        }
+
+        fun convertDateIntoTimeStamp(dateTime: String) : Long{
+//            try {
+//                val formatter: SimpleDateFormat = SimpleDateFormat("dd/MM/yyyy hh:mm")
+//                val date = formatter.parse(dateTime) as Date
+//                val output = date.time / 1000L
+//                val str = java.lang.Long.toString(output)
+//               return  str.toLong() * 1000
+//            } catch (e: Exception) {
+//            }
+//                return 0
+            val formatter: DateFormat = SimpleDateFormat("dd/MM/yyyy hh:mm")
+            val date = formatter.parse(dateTime) as Date
+            return date.getTime()
+        }
+
+
 
     }
 }

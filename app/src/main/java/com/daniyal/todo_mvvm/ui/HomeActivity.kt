@@ -25,6 +25,7 @@ import com.google.android.material.navigation.NavigationView
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.home_toolbar.*
+import org.jetbrains.anko.toast
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -54,27 +55,35 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 }
 
                 is ResponseEvent.Success<List<TodoItemResponse>> -> {
-                    val events: Map<Date, List<Event>> = toMap(loadEvents_(it.data))
+                    if (it.data!!.size > 0) {
+                        val events: Map<Date, List<Event>> =
+                            toMap(loadEvents_(it.data))
 
-                    for (date in events.keys) {
-                        val header = HeaderItem(date)
-                        items.add(header)
-                        for (event in events[date]!!) {
-                            val item = EventItem(
-                                event.title,
-                                event.desc,
-                                event.category,
-                                event.priority,
-                                event.user_id,
-                                event.isCompleted,
-                                event.getDate().toString(),
-                                event.hour
-                            )
-                            items.add(item)
+                        for (date in events.keys) {
+                            val header = HeaderItem(date)
+                            items.add(header)
+                            for (event in events[date]!!) {
+                                val item = EventItem(
+                                    event.title,
+                                    event.desc,
+                                    event.category,
+                                    event.priority,
+                                    event.user_id,
+                                    event.isCompleted,
+                                    event.getDate().toString(),
+                                    event.hour
+                                )
+                                items.add(item)
+                            }
                         }
+
+
+                    } else {
+                        toast("No Item Found").setGravity(Gravity.CENTER, 0, 0)
                     }
 
                     RV_TodoItems.adapter = EventAdapters(items, this)
+
                 }
 
             }
@@ -86,21 +95,10 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         //val recyclerView = findViewById<View>(R.id.lst_items) as RecyclerView
         RV_TodoItems.layoutManager = LinearLayoutManager(this)
+//        RV_TodoItems.layoutManager
 
+        drawerSetup()
 
-        val drawer = findViewById<DrawerLayout>(R.id.drawer_layout)
-        val toggle = ActionBarDrawerToggle(
-            this, drawer, R.string.app_name,
-            R.string.app_name
-        )
-        drawer.addDrawerListener(toggle)
-        toggle.syncState()
-        val navigationView = findViewById<NavigationView>(R.id.nav_view)
-        navigationView.setNavigationItemSelectedListener(this)
-
-        IV_Menu.setOnClickListener {
-            drawer.openDrawer(Gravity.LEFT)
-        }
 
     }
 
@@ -122,7 +120,7 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 )
             )
         }
-        return events
+        return events.reversed()
     }
 
 //    @NonNull
@@ -164,7 +162,7 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         val id = item.itemId
         if (id == R.id.new_task) {
-            openDetailFragment(AddTaskFragment.newInstance())
+            openDetailFragment(AddEditTaskFragment.newInstance("Add Task" , true))
         } else if (id == R.id.logout) {
             Toast.makeText(this, "Galelry", Toast.LENGTH_SHORT).show()
         }
@@ -184,4 +182,19 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             .commit()
     }
 
+    private fun drawerSetup() {
+        val drawer = findViewById<DrawerLayout>(R.id.drawer_layout)
+        val toggle = ActionBarDrawerToggle(
+            this, drawer, R.string.app_name,
+            R.string.app_name
+        )
+        drawer.addDrawerListener(toggle)
+        toggle.syncState()
+        val navigationView = findViewById<NavigationView>(R.id.nav_view)
+        navigationView.setNavigationItemSelectedListener(this)
+
+        IV_Menu.setOnClickListener {
+            drawer.openDrawer(Gravity.LEFT)
+        }
+    }
 }

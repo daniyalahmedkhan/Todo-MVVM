@@ -99,7 +99,6 @@ public class EventAdapters extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                 holder.txt_desc.setText(event.getDesc());
                 holder.txt_time.setText(event.getHour().split(" ")[0]);
                 holder.txt_midday.setText(event.getHour().split(" ")[1]);
-                Pri.Companion.getClaimStatus(9);
                 holder.IV_Priority.setColorFilter(ContextCompat.getColor(context, R.color.background), android.graphics.PorterDuff.Mode.SRC_IN);
 
                 break;

@@ -62,12 +62,23 @@ public class DateUtils {
 
 
     public static Date getDate(long time) {
-        Calendar cal = Calendar.getInstance(Locale.ENGLISH);
-        cal.setTimeInMillis(time * 1000);
-        String date_ = DateFormat.format("dd-MM-yyyy", cal).toString();
+//        Calendar cal = Calendar.getInstance(Locale.ENGLISH);
+//        cal.setTimeInMillis(time * 1000);
+//        String date_ = DateFormat.format("dd-MM-yyyy", cal).toString();
+//
+//
+//        //  String dtStart = "2010-10-15T09:27:37Z";
+//        SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
+//        try {
+//            Date date = format.parse(date_);
+//            return date;
+//        } catch (ParseException e) {
+//            e.printStackTrace();
+//        }
 
+        SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
+        String date_ = formatter.format(new Date(time));
 
-      //  String dtStart = "2010-10-15T09:27:37Z";
         SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
         try {
             Date date = format.parse(date_);
@@ -77,12 +88,16 @@ public class DateUtils {
         }
 
         return null;
+
     }
 
     public static String getHour(long time) {
-        Calendar cal = Calendar.getInstance(Locale.ENGLISH);
-        cal.setTimeInMillis(time * 1000);
-        String date_ = DateFormat.format("hh:mm a", cal).toString();
-        return date_;
+//        Calendar cal = Calendar.getInstance(Locale.ENGLISH);
+//        cal.setTimeInMillis(time * 1000);
+//        String date_ = DateFormat.format("hh:mm a", cal).toString();
+//        return date_;
+
+        SimpleDateFormat formatter = new SimpleDateFormat("hh:mm a");
+        return formatter.format(new Date(time));
     }
 }

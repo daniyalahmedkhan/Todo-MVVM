@@ -36,7 +36,8 @@
             android:layout_marginTop="@dimen/_25sdp"
             android:text="AVP"
             android:textColor="@color/white"
-            android:textSize="@dimen/_15sdp" />
+            android:textSize="@dimen/_15sdp"
+            android:id="@+id/TV_UserName"/>
 
     </RelativeLayout>
 
