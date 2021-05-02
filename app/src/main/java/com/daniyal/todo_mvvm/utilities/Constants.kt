@@ -10,4 +10,5 @@ object Constants {
     val isLogin: String = "isLogin"
     val userID: String = "userID"
     val userImage: String = "userImage"
+    var isItemUpdate: Boolean = false
 }

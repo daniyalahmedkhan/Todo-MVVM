@@ -12,28 +12,33 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.daniyal.todo_mvvm.R
+import com.daniyal.todo_mvvm.adapters.home.EventItem
+import com.daniyal.todo_mvvm.adapters.home.ListItem
 import com.daniyal.todo_mvvm.data.model.remote.ResponseEvent
 import com.daniyal.todo_mvvm.data.model.response.TodoItemResponse
 import com.daniyal.todo_mvvm.databinding.AddTaskFragmentBinding
+import com.daniyal.todo_mvvm.utilities.Constants
 import com.daniyal.todo_mvvm.utilities.GeneralHelper
 import com.daniyal.todo_mvvm.viewmodels.PostTodoItemViewModel
+import com.daniyal.todo_mvvm.viewmodels.TodoItemViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.other_toolbar.*
 import java.util.*
 
+
 @AndroidEntryPoint
-class AddTaskFragment : Fragment(), DatePickerDialog.OnDateSetListener,
+class Add_EditTaskFragment : Fragment(), DatePickerDialog.OnDateSetListener,
     TimePickerDialog.OnTimeSetListener {
 
     private lateinit var addTaskFragmentBinding: AddTaskFragmentBinding
     private val postTodoItemViewModel: PostTodoItemViewModel by viewModels()
     lateinit var dateTime: String
 
-
     companion object {
-
-        fun newInstance(): AddTaskFragment {
-            return AddTaskFragment()
+        private var listItem: ListItem? = null
+        fun newInstance(listItem: ListItem?): Add_EditTaskFragment {
+            this.listItem = listItem
+            return Add_EditTaskFragment()
         }
     }
 
@@ -47,6 +52,18 @@ class AddTaskFragment : Fragment(), DatePickerDialog.OnDateSetListener,
         );
         addTaskFragmentBinding.viewmodel = postTodoItemViewModel
 
+        if (listItem != null) {
+            postTodoItemViewModel.isAddTask = false
+            postTodoItemViewModel.taskId = (listItem as EventItem).taskid
+            postTodoItemViewModel.title.value = (listItem as EventItem).event
+            postTodoItemViewModel.desc.value = (listItem as EventItem).desc
+            postTodoItemViewModel.category.value = (listItem as EventItem).category
+         //   postTodoItemViewModel.dateTime.value = (listItem as EventItem).time
+            postTodoItemViewModel.priority.value = (listItem as EventItem).priority.toInt()
+        } else {
+            postTodoItemViewModel.isAddTask = true
+        }
+
         return addTaskFragmentBinding.root
     }
 
@@ -56,7 +73,7 @@ class AddTaskFragment : Fragment(), DatePickerDialog.OnDateSetListener,
         toolbar.setNavigationIcon(R.drawable.back)
         toolbar.setTitle("Add Task")
         toolbar.setNavigationOnClickListener {
-            parentFragmentManager.popBackStack()
+            requireActivity().getSupportFragmentManager().popBackStack();
         }
 
 
@@ -79,7 +96,8 @@ class AddTaskFragment : Fragment(), DatePickerDialog.OnDateSetListener,
                 is ResponseEvent.Failure -> {
                 }
                 is ResponseEvent.Success<TodoItemResponse> -> {
-                    parentFragmentManager.popBackStack()
+                    Constants.isItemUpdate = true
+                    requireActivity().getSupportFragmentManager().popBackStack()
                 }
 
             }

@@ -10,8 +10,11 @@ import androidx.annotation.NonNull
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
+import androidx.databinding.DataBindingUtil
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.daniyal.todo_mvvm.R
@@ -19,7 +22,10 @@ import com.daniyal.todo_mvvm.adapters.home.*
 import com.daniyal.todo_mvvm.data.enums.Pri
 import com.daniyal.todo_mvvm.data.model.remote.ResponseEvent
 import com.daniyal.todo_mvvm.data.model.response.TodoItemResponse
+import com.daniyal.todo_mvvm.databinding.ActivityMainBinding
+import com.daniyal.todo_mvvm.utilities.Constants.isItemUpdate
 import com.daniyal.todo_mvvm.utilities.DateUtils
+import com.daniyal.todo_mvvm.viewmodels.PostTodoItemViewModel
 import com.daniyal.todo_mvvm.viewmodels.TodoItemViewModel
 import com.google.android.material.navigation.NavigationView
 import dagger.hilt.android.AndroidEntryPoint
@@ -37,10 +43,15 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     val todoItemViewModel: TodoItemViewModel by viewModels()
     private val items: MutableList<ListItem> = ArrayList()
     private lateinit var homeItemsAdapter: HomeItemsAdapter
+    private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+
+        /*
+       *  Data Binding
+       * */
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
 
 
         Pri.getClaimStatus(9);
@@ -57,14 +68,14 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
                 is ResponseEvent.Success<List<TodoItemResponse>> -> {
                     if (it.data!!.size > 0) {
-                        val events: Map<Date, List<Event>> =
-                            toMap(loadEvents_(it.data))
+                        val events: Map<Date, List<Event>> = toMap(loadEvents_(it.data))
 
                         for (date in events.keys) {
                             val header = HeaderItem(date)
                             items.add(header)
                             for (event in events[date]!!) {
                                 val item = EventItem(
+                                    event.taskID,
                                     event.title,
                                     event.desc,
                                     event.category,
@@ -75,6 +86,7 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                                     event.hour
                                 )
                                 items.add(item)
+
                             }
                         }
 
@@ -85,9 +97,10 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
                     homeItemsAdapter =
                         HomeItemsAdapter(items, this) { itemDto: ListItem, position: Int ->
-                            position
+                           openDetailFragment(Add_EditTaskFragment.newInstance((itemDto as EventItem)))
+
                         }
-                    RV_TodoItems.adapter = homeItemsAdapter
+                    binding.RVTodoItems.adapter = homeItemsAdapter
 
                 }
 
@@ -113,6 +126,7 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         for (i in list!!.iterator()) {
             events.add(
                 Event(
+                    i.id,
                     i.title,
                     i.description,
                     i.category,
@@ -167,7 +181,7 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         val id = item.itemId
         if (id == R.id.new_task) {
-            openDetailFragment(AddTaskFragment.newInstance())
+            openDetailFragment(Add_EditTaskFragment.newInstance(null))
         } else if (id == R.id.logout) {
             Toast.makeText(this, "Galelry", Toast.LENGTH_SHORT).show()
         }
@@ -182,7 +196,7 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 * Fragment Management
 * */
     private fun openDetailFragment(fragment: Fragment) {
-        supportFragmentManager.beginTransaction().add(R.id.drawer_layout, fragment)
+        supportFragmentManager.beginTransaction().add(R.id.container, fragment)
             .addToBackStack(if (supportFragmentManager.backStackEntryCount == 0) TAG else null)
             .commit()
     }
@@ -202,4 +216,17 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             drawer.openDrawer(Gravity.LEFT)
         }
     }
+
+    override fun onPause() {
+        super.onPause()
+        println("##################################")
+    }
+
+    override fun onResume() {
+        super.onResume()
+        println("##################################")
+        if (isItemUpdate) todoItemViewModel.getTodoItems()
+    }
+
+
 }

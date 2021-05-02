@@ -2,7 +2,7 @@ package com.daniyal.todo_mvvm.adapters.home
 
 import androidx.annotation.NonNull
 
-data class EventItem constructor(val event: String?, val desc: String, val category: String, val priority: String,
+data class EventItem constructor(val taskid: Int? ,val event: String?, val desc: String, val category: String, val priority: String,
                                  val user_id: String, val isCompleted: Boolean , val time: String, val hour: String) : ListItem() {
 
 //    private var event: String? = null

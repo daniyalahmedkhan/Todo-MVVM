@@ -23,15 +23,15 @@ class TodoItemViewModel @ViewModelInject constructor(private val todoItemRepo: T
         getTodoItems()
     }
 
-    private fun getTodoItems() {
+     fun getTodoItems() {
         itemState.value = ResponseEvent.Loading
         viewModelScope.launch {
             Dispatchers.IO
             try {
                 val response = todoItemRepo.fetchItemsFromServer()
                 if (response.isSuccessful) {
-                    itemState.value =
-                        ResponseEvent.Success(response.body()?.filter { it.user_id == PrefsHelper.getString(Constants.userID) })
+                    Constants.isItemUpdate = false
+                    itemState.value = ResponseEvent.Success(response.body()?.filter { it.user_id == PrefsHelper.getString(Constants.userID) })
                 } else {
                     val jObjError = JSONObject(response.errorBody()!!.string())
                     val message = GeneralHelper.parseFailureJson((jObjError))
