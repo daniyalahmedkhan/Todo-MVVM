@@ -4,9 +4,8 @@ import android.os.Bundle
 import android.view.Gravity
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.widget.Toast
-import androidx.activity.viewModels
-import androidx.annotation.NonNull
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
@@ -14,26 +13,12 @@ import androidx.databinding.DataBindingUtil
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.FragmentTransaction
-import androidx.lifecycle.Observer
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.daniyal.todo_mvvm.R
-import com.daniyal.todo_mvvm.adapters.home.*
-import com.daniyal.todo_mvvm.data.enums.Pri
-import com.daniyal.todo_mvvm.data.model.remote.ResponseEvent
-import com.daniyal.todo_mvvm.data.model.response.TodoItemResponse
 import com.daniyal.todo_mvvm.databinding.ActivityMainBinding
-import com.daniyal.todo_mvvm.utilities.Constants.isItemUpdate
-import com.daniyal.todo_mvvm.utilities.DateUtils
-import com.daniyal.todo_mvvm.viewmodels.PostTodoItemViewModel
-import com.daniyal.todo_mvvm.viewmodels.TodoItemViewModel
 import com.google.android.material.navigation.NavigationView
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.home_toolbar.*
-import org.jetbrains.anko.toast
-import java.util.*
-import kotlin.collections.ArrayList
 
 
 @AndroidEntryPoint
@@ -55,6 +40,7 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         openDetailFragment(HomeFragment.newInstance())
 
+
     }
 
 
@@ -67,7 +53,7 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         val id = item.itemId
         if (id == R.id.new_task) {
-            openDetailFragment(Add_EditTaskFragment.newInstance(null))
+            openTaskFragment()
         } else if (id == R.id.logout) {
             Toast.makeText(this, "Galelry", Toast.LENGTH_SHORT).show()
         }
@@ -86,6 +72,13 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             .commit()
     }
 
+    private fun openTaskFragment() {
+        val fm: FragmentManager = supportFragmentManager
+        val fragment: HomeFragment = fm.findFragmentById(R.id.home_container) as HomeFragment
+        fragment.openDetailFragment(Add_EditTaskFragment.newInstance(null))
+    }
+
+
     private fun drawerSetup() {
         val drawer = findViewById<DrawerLayout>(R.id.drawer_layout)
         val toggle = ActionBarDrawerToggle(
@@ -100,6 +93,10 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         IV_Menu.setOnClickListener {
             drawer.openDrawer(Gravity.LEFT)
         }
+
+        IV_AddTask.setOnClickListener {
+            openTaskFragment()
+        }
     }
 
     override fun onPause() {
@@ -112,5 +109,7 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         println("Activity Resume ##################################")
     }
 
-
+    fun hideToolbar(boolean: Boolean) {
+        toolbar.visibility = if (boolean) View.GONE else View.VISIBLE
+    }
 }

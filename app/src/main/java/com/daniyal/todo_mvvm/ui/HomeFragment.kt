@@ -20,7 +20,6 @@ import com.daniyal.todo_mvvm.databinding.HomeFragmentBinding
 import com.daniyal.todo_mvvm.utilities.DateUtils
 import com.daniyal.todo_mvvm.utilities.SwipeToDeleteCallback
 import com.daniyal.todo_mvvm.viewmodels.TodoItemViewModel
-import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import org.jetbrains.anko.toast
 import java.util.*
@@ -157,7 +156,7 @@ class HomeFragment : Fragment() {
     /*
 * Fragment Management
 * */
-    private fun openDetailFragment(fragment: Fragment) {
+    public fun openDetailFragment(fragment: Fragment) {
 
         requireActivity().supportFragmentManager.beginTransaction()
             .replace(R.id.home_container, fragment)
@@ -191,6 +190,17 @@ class HomeFragment : Fragment() {
         itemTouchhelper.attachToRecyclerView(binding.RVTodoItems)
 
 
+    }
+
+    override fun onPause() {
+        super.onPause()
+        (activity as HomeActivity?)?.hideToolbar(true)
+
+    }
+
+    override fun onResume() {
+        super.onResume()
+        (activity as HomeActivity?)?.hideToolbar(false)
     }
 
 
