@@ -1,22 +1,33 @@
 package com.daniyal.todo_mvvm.adapters.home;
 
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
-
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.daniyal.todo_mvvm.R;
-import com.daniyal.todo_mvvm.utilities.DateUtils;
+import com.daniyal.todo_mvvm.data.enums.Pri;
+import com.daniyal.todo_mvvm.data.enums.Priority;
 
 import java.util.Collections;
 import java.util.List;
 
+import javax.inject.Inject;
+
+import dagger.hilt.android.AndroidEntryPoint;
+
+
 public class EventAdapters extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+
+
+    private Context context;
 
     private static class HeaderViewHolder extends RecyclerView.ViewHolder {
 
@@ -31,11 +42,16 @@ public class EventAdapters extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
     private static class EventViewHolder extends RecyclerView.ViewHolder {
 
-        TextView txt_title;
+        TextView txt_title, txt_desc, txt_time , txt_midday;
+        ImageView IV_Priority;
 
         EventViewHolder(View itemView) {
             super(itemView);
-            txt_title = (TextView) itemView.findViewById(R.id.txt_title);
+            txt_title = (TextView) itemView.findViewById(R.id.TV_Title);
+            txt_desc = (TextView) itemView.findViewById(R.id.TV_Desc);
+            txt_time = (TextView) itemView.findViewById(R.id.TV_Time);
+            txt_midday = (TextView) itemView.findViewById(R.id.TV_Midday);
+            IV_Priority = (ImageView) itemView.findViewById(R.id.IV_Priority);
         }
 
     }
@@ -43,8 +59,9 @@ public class EventAdapters extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     @NonNull
     private List<ListItem> items = Collections.emptyList();
 
-    public EventAdapters(@NonNull List<ListItem> items) {
+    public EventAdapters(@NonNull List<ListItem> items, Context context) {
         this.items = items;
+        this.context = context;
     }
 
     @Override
@@ -56,7 +73,7 @@ public class EventAdapters extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                 return new HeaderViewHolder(itemView);
             }
             case ListItem.TYPE_EVENT: {
-                View itemView = inflater.inflate(R.layout.view_list_item_event, parent, false);
+                View itemView = inflater.inflate(R.layout.todo_item_layout, parent, false);
                 return new EventViewHolder(itemView);
             }
             default:
@@ -72,14 +89,19 @@ public class EventAdapters extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                 HeaderItem header = (HeaderItem) items.get(position);
                 HeaderViewHolder holder = (HeaderViewHolder) viewHolder;
                 // your logic here
-                holder.txt_header.setText(DateUtils.formatDate(header.getDate()));
+                //  holder.txt_header.setText(DateUtils.formatDate(header.getDate()));
                 break;
             }
             case ListItem.TYPE_EVENT: {
                 EventItem event = (EventItem) items.get(position);
                 EventViewHolder holder = (EventViewHolder) viewHolder;
-                // your logic here
-                holder.txt_title.setText(event.getEvent().getTitle());
+                holder.txt_title.setText(event.getEvent());
+                holder.txt_desc.setText(event.getDesc());
+                holder.txt_time.setText(event.getHour().split(" ")[0]);
+                holder.txt_midday.setText(event.getHour().split(" ")[1]);
+                Pri.Companion.getClaimStatus(9);
+                holder.IV_Priority.setColorFilter(ContextCompat.getColor(context, R.color.background), android.graphics.PorterDuff.Mode.SRC_IN);
+
                 break;
             }
             default:

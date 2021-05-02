@@ -7,8 +7,8 @@ data class TodoItemResponse(
     @SerializedName("title") val title: String,
     @SerializedName("description") val description: String,
     @SerializedName("category") val category: String,
-    @SerializedName("timestamp") val timestamp: Int,
-    @SerializedName("priority") val priority: Int,
+    @SerializedName("timestamp") val timestamp: Long,
+    @SerializedName("priority") val priority: String,
     @SerializedName("user_id") val user_id: String,
     @SerializedName("isCompleted") val isCompleted: Boolean
 )

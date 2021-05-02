@@ -11,10 +11,15 @@ import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.daniyal.todo_mvvm.R
 import com.daniyal.todo_mvvm.adapters.home.*
+import com.daniyal.todo_mvvm.data.enums.Pri
+import com.daniyal.todo_mvvm.data.model.remote.ResponseEvent
+import com.daniyal.todo_mvvm.data.model.response.TodoItemResponse
+import com.daniyal.todo_mvvm.utilities.DateUtils
 import com.daniyal.todo_mvvm.viewmodels.TodoItemViewModel
 import com.google.android.material.navigation.NavigationView
 import dagger.hilt.android.AndroidEntryPoint
@@ -27,6 +32,7 @@ import kotlin.collections.ArrayList
 @AndroidEntryPoint
 class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
+    private val TAG = "FIRST"
     val todoItemViewModel: TodoItemViewModel by viewModels()
     private val items: MutableList<ListItem> = ArrayList()
 
@@ -34,25 +40,52 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+
+        Pri.getClaimStatus(9);
+
         todoItemViewModel.itemState.observe(this, Observer {
+
+            when (it) {
+
+                is ResponseEvent.Loading -> {
+                }
+
+                is ResponseEvent.Failure -> {
+                }
+
+                is ResponseEvent.Success<List<TodoItemResponse>> -> {
+                    val events: Map<Date, List<Event>> = toMap(loadEvents_(it.data))
+
+                    for (date in events.keys) {
+                        val header = HeaderItem(date)
+                        items.add(header)
+                        for (event in events[date]!!) {
+                            val item = EventItem(
+                                event.title,
+                                event.desc,
+                                event.category,
+                                event.priority,
+                                event.user_id,
+                                event.isCompleted,
+                                event.getDate().toString(),
+                                event.hour
+                            )
+                            items.add(item)
+                        }
+                    }
+
+                    RV_TodoItems.adapter = EventAdapters(items, this)
+                }
+
+            }
 
         })
 
-        val events: Map<Date, List<Event>> =
-            toMap(loadEvents())
+        //  val events: Map<Date, List<Event>> = toMap(loadEvents())
 
-        for (date in events.keys) {
-            val header = HeaderItem(date)
-            items.add(header)
-            for (event in events[date]!!) {
-                val item = EventItem(event)
-                items.add(item)
-            }
-        }
 
         //val recyclerView = findViewById<View>(R.id.lst_items) as RecyclerView
         RV_TodoItems.layoutManager = LinearLayoutManager(this)
-        RV_TodoItems.adapter = EventAdapters(items)
 
 
         val drawer = findViewById<DrawerLayout>(R.id.drawer_layout)
@@ -72,13 +105,34 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     @NonNull
-    private fun loadEvents(): List<Event> {
+    private fun loadEvents_(list: List<TodoItemResponse>?): List<Event> {
         val events: MutableList<Event> = ArrayList()
-        for (i in 1..49) {
-            events.add(Event("event $i", buildRandomDateInCurrentMonth()!!))
+        for (i in list!!.iterator()) {
+            events.add(
+                Event(
+                    i.title,
+                    i.description,
+                    i.category,
+                    i.priority,
+                    i.user_id,
+                    i.isCompleted,
+                    DateUtils.getDate(i.timestamp),
+                    DateUtils.getHour(i.timestamp)
+
+                )
+            )
         }
         return events
     }
+
+//    @NonNull
+//    private fun loadEvents(): List<Event> {
+//        val events: MutableList<Event> = ArrayList()
+//        for (i in 1..49) {
+//            events.add(Event("event $i", buildRandomDateInCurrentMonth()!!))
+//        }
+//        return events
+//    }
 
     private fun buildRandomDateInCurrentMonth(): Date? {
         val random = Random()
@@ -107,18 +161,11 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         return true
     }
 
-//    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-//        val id = item.itemId
-//        return if (id == R.id.action_settings) {
-//            true
-//        } else super.onOptionsItemSelected(item)
-//    }
-
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         val id = item.itemId
-        if (id == R.id.nav_camera) {
-            Toast.makeText(this, "Camera", Toast.LENGTH_SHORT).show()
-        } else if (id == R.id.nav_gallery) {
+        if (id == R.id.new_task) {
+            openDetailFragment(AddTaskFragment.newInstance())
+        } else if (id == R.id.logout) {
             Toast.makeText(this, "Galelry", Toast.LENGTH_SHORT).show()
         }
 
@@ -126,4 +173,15 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         drawer.closeDrawer(GravityCompat.START)
         return true
     }
+
+
+    /*
+* Fragment Management
+* */
+    private fun openDetailFragment(fragment: Fragment) {
+        supportFragmentManager.beginTransaction().add(R.id.drawer_layout, fragment)
+            .addToBackStack(if (supportFragmentManager.backStackEntryCount == 0) TAG else null)
+            .commit()
+    }
+
 }

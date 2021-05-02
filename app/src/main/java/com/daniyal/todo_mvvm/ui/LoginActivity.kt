@@ -70,8 +70,9 @@ class LoginActivity : AppCompatActivity() {
             val account: GoogleSignInAccount? = completedTask.getResult(ApiException::class.java)
             if (account != null) {
 
-                println("##############   " + account.id)
                 PrefsHelper.putBoolean(Constants.isLogin, true)
+                PrefsHelper.putString(Constants.userID, account.id)
+                PrefsHelper.putString(Constants.userImage, account.photoUrl.toString())
                 startActivity(intentFor<HomeActivity>().newTask())
                 finish()
             }

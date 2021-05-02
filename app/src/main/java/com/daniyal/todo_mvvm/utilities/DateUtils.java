@@ -1,8 +1,11 @@
 package com.daniyal.todo_mvvm.utilities;
 
+import android.text.format.DateFormat;
+
 import androidx.annotation.IntRange;
 import androidx.annotation.NonNull;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -57,4 +60,29 @@ public class DateUtils {
         return calendar.get(Calendar.YEAR);
     }
 
+
+    public static Date getDate(long time) {
+        Calendar cal = Calendar.getInstance(Locale.ENGLISH);
+        cal.setTimeInMillis(time * 1000);
+        String date_ = DateFormat.format("dd-MM-yyyy", cal).toString();
+
+
+      //  String dtStart = "2010-10-15T09:27:37Z";
+        SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
+        try {
+            Date date = format.parse(date_);
+            return date;
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    public static String getHour(long time) {
+        Calendar cal = Calendar.getInstance(Locale.ENGLISH);
+        cal.setTimeInMillis(time * 1000);
+        String date_ = DateFormat.format("hh:mm a", cal).toString();
+        return date_;
+    }
 }
