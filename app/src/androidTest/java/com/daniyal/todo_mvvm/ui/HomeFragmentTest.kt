@@ -16,7 +16,6 @@ import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner
 import com.daniyal.todo_mvvm.R
-import kotlinx.android.synthetic.main.home_toolbar.*
 import org.hamcrest.Matcher
 import org.junit.Assert.*
 import org.junit.Rule
@@ -41,13 +40,16 @@ class HomeFragmentTest {
 
     /* Check RecyclerView On Item Click Listener Open the Edit Fragment by clicking item at 1st position */
     @Test
-    fun navEditFragment_from_HomeFragment_Test(){
+    fun navEditFragment_from_HomeFragment_Test() {
 
         onView(isRoot()).perform(waitFor(7000))
 
         onView(withId(R.id.RV_TodoItems)).perform(
-            RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(1,
-                click()))
+            RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(
+                1,
+                click()
+            )
+        )
 
         onView(withId(R.id.ET_Title)).check(matches(withEffectiveVisibility(Visibility.VISIBLE)))
 
@@ -56,7 +58,7 @@ class HomeFragmentTest {
     /* User Logout test */
     /* - User must be logged in  */
     @Test
-    fun userLogout_ByNavigationDrawerItem(){
+    fun userLogout_ByNavigationDrawerItem() {
         onView(withId(R.id.IV_Menu)).perform(click())
         onView(withId(R.id.nav_view))
             .perform(NavigationViewActions.navigateTo(R.id.logout));

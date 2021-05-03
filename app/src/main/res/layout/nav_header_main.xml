@@ -24,20 +24,21 @@
             android:layout_width="@dimen/_65sdp"
             android:layout_height="@dimen/_65sdp"
             android:layout_centerInParent="true"
-            android:src="@drawable/temp"
+            android:src="@mipmap/userimage"
             app:civ_border_color="@color/white"
             app:civ_border_width="1dp" />
 
         <TextView
+            android:id="@+id/TV_UserName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/IV_UserProfile"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="@dimen/_25sdp"
-            android:text="AVP"
+            android:fontFamily="@font/roboto_regular"
+            android:text="John Doe"
             android:textColor="@color/white"
-            android:textSize="@dimen/_15sdp"
-            android:id="@+id/TV_UserName"/>
+            android:textSize="@dimen/_15sdp" />
 
     </RelativeLayout>
 

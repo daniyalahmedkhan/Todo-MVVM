@@ -25,10 +25,10 @@
             android:layout_height="wrap_content"
             android:background="@drawable/date_background"
             android:gravity="center"
-            android:text="Today"
             android:textColor="@color/white"
             android:textSize="@dimen/_10sdp"
-            android:fontFamily="@font/roboto_regular"/>
+            android:fontFamily="@font/roboto_regular"
+            android:id="@+id/TV_ItemDate"/>
 
 
     </LinearLayout>

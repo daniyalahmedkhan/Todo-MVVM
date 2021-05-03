@@ -13,6 +13,7 @@ import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.daniyal.todo_mvvm.R
+import com.daniyal.todo_mvvm.utilities.DateUtils
 import com.daniyal.todo_mvvm.utilities.GeneralHelper
 import java.util.*
 import kotlin.collections.ArrayList
@@ -32,9 +33,11 @@ class HomeItemsAdapter constructor(
 
     private class HeaderViewHolder constructor(itemView: View) : ViewHolder(itemView) {
         var txt_header: TextView
+        var TV_ItemDate: TextView
 
         init {
             txt_header = itemView.findViewById<View>(R.id.txt_header) as TextView
+            TV_ItemDate = itemView.findViewById<View>(R.id.TV_ItemDate) as TextView
         }
     }
 
@@ -93,6 +96,7 @@ class HomeItemsAdapter constructor(
             ListItem.TYPE_HEADER -> {
                 val header = itemListFilter[position] as HeaderItem
                 val holder = holder as HeaderViewHolder
+                holder.TV_ItemDate.text = DateUtils.getDateFromGMT(header.getDate().toString())
             }
             ListItem.TYPE_EVENT -> {
                 //val event = items[position] as EventItem

@@ -72,6 +72,8 @@ class HomeFragment : Fragment() {
                 is ResponseEvent.Success<List<TodoItemResponse>> -> {
 
                     if (it.data!!.size > 0) {
+                        binding.loading.visibility = View.GONE
+                        binding.RVTodoItems.visibility = View.VISIBLE
                         val events: Map<Date, List<Event>> = toMap(loadEvents_(it.data))
                         items.clear()
                         binding.RVTodoItems.removeAllViews()
@@ -97,7 +99,9 @@ class HomeFragment : Fragment() {
 
 
                     } else {
-                        requireActivity().toast("No Item Found").setGravity(Gravity.CENTER, 0, 0)
+                        binding.loading.visibility = View.VISIBLE
+                        binding.RVTodoItems.visibility = View.GONE
+                       // requireActivity().toast("No Item Found").setGravity(Gravity.CENTER, 0, 0)
                     }
 
 

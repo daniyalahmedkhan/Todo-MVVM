@@ -39,6 +39,16 @@
     </RelativeLayout>
 
 
+        <com.airbnb.lottie.LottieAnimationView
+            android:layout_width="@dimen/_150sdp"
+            android:layout_height="@dimen/_150sdp"
+            app:lottie_autoPlay="true"
+            app:lottie_rawRes="@raw/notfound"
+            app:lottie_loop="true"
+            app:lottie_speed="0.7"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/_60sdp"
+            android:id="@+id/loading"/>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/RV_TodoItems"

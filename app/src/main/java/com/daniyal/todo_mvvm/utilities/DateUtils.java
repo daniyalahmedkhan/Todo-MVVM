@@ -3,6 +3,8 @@ package com.daniyal.todo_mvvm.utilities;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
+import java.util.TimeZone;
 
 
 public class DateUtils {
@@ -28,5 +30,19 @@ public class DateUtils {
 
         SimpleDateFormat formatter = new SimpleDateFormat("hh:mm a");
         return formatter.format(new Date(time));
+    }
+
+    public static String getDateFromGMT(String inputText) {
+        try {
+            SimpleDateFormat inputFormat = new SimpleDateFormat(
+                    "EE MMM dd HH:mm:ss zz yyy", Locale.US);
+            inputFormat.setTimeZone(TimeZone.getTimeZone("Etc/UTC"));
+
+            SimpleDateFormat outputFormat = new SimpleDateFormat("dd MMM");
+
+            Date date = inputFormat.parse(inputText);
+            return outputFormat.format(date);
+        }catch (Exception e){}
+        return "None";
     }
 }

@@ -48,7 +48,6 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     }
 
-
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         // Inflate the menu; this adds items to the action bar if it is present.
         menuInflater.inflate(R.menu.activity_main_drawer, menu)
@@ -70,21 +69,6 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         val drawer = findViewById<DrawerLayout>(R.id.drawer_layout)
         drawer.closeDrawer(GravityCompat.START)
         return true
-    }
-
-
-    /*
-* Fragment Management
-* */
-    private fun openDetailFragment(fragment: Fragment) {
-        supportFragmentManager.beginTransaction().add(R.id.home_container, fragment)
-            .commit()
-    }
-
-    private fun openTaskFragment() {
-        val fm: FragmentManager = supportFragmentManager
-        val fragment: HomeFragment = fm.findFragmentById(R.id.home_container) as HomeFragment
-        fragment.openDetailFragment(Add_EditTaskFragment.newInstance(null, "Add Task"))
     }
 
 
@@ -121,4 +105,19 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     fun hideToolbar(boolean: Boolean) {
         toolbar.visibility = if (boolean) View.GONE else View.VISIBLE
     }
+
+    /*
+* Fragment Management
+* */
+    private fun openDetailFragment(fragment: Fragment) {
+        supportFragmentManager.beginTransaction().add(R.id.home_container, fragment)
+            .commit()
+    }
+
+    private fun openTaskFragment() {
+        val fm: FragmentManager = supportFragmentManager
+        val fragment: HomeFragment = fm.findFragmentById(R.id.home_container) as HomeFragment
+        fragment.openDetailFragment(Add_EditTaskFragment.newInstance(null, "Add Task"))
+    }
+
 }
