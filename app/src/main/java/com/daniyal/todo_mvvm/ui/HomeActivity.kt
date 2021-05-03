@@ -15,10 +15,15 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import com.daniyal.todo_mvvm.R
 import com.daniyal.todo_mvvm.databinding.ActivityMainBinding
+import com.daniyal.todo_mvvm.utilities.Constants
+import com.daniyal.todo_mvvm.utilities.PrefsHelper
 import com.google.android.material.navigation.NavigationView
+import com.google.firebase.auth.FirebaseAuth
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.home_toolbar.*
+import org.jetbrains.anko.intentFor
+import org.jetbrains.anko.newTask
 
 
 @AndroidEntryPoint
@@ -55,7 +60,11 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         if (id == R.id.new_task) {
             openTaskFragment()
         } else if (id == R.id.logout) {
-            Toast.makeText(this, "Galelry", Toast.LENGTH_SHORT).show()
+            val auth = FirebaseAuth.getInstance()
+            auth.signOut()
+            PrefsHelper.putBoolean(Constants.isLogin, false)
+            startActivity(intentFor<LoginActivity>().newTask())
+            finish()
         }
 
         val drawer = findViewById<DrawerLayout>(R.id.drawer_layout)

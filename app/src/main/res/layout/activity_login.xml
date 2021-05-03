@@ -42,9 +42,10 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/_5sdp"
                 android:background="@null"
+                android:fontFamily="@font/roboto_light"
                 android:hint="Username"
                 android:text="@={viewmodel.username}"
-                android:fontFamily="@font/roboto_light"/>
+                android:id="@+id/ET_User"/>
 
             <View
                 android:layout_width="match_parent"
@@ -58,9 +59,10 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/_5sdp"
                 android:background="@null"
+                android:fontFamily="@font/roboto_light"
                 android:hint="Password"
                 android:text="@={viewmodel.password}"
-                android:fontFamily="@font/roboto_light"/>
+                android:id="@+id/ET_Pass"/>
 
         </LinearLayout>
 
@@ -73,10 +75,10 @@
             android:layout_marginLeft="@dimen/_30sdp"
             android:layout_marginTop="@dimen/_15sdp"
             android:layout_marginRight="@dimen/_30sdp"
+            android:fontFamily="@font/roboto_regular"
             android:onClick="@{viewmodel::validateFields}"
             android:padding="@dimen/_15sdp"
-            android:text="Login"
-            android:fontFamily="@font/roboto_regular"/>
+            android:text="Login" />
 
         <LinearLayout
             android:id="@+id/LL_View"
@@ -102,8 +104,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="OR"
-                />
+                android:text="OR" />
 
             <View
                 android:layout_width="0dp"
@@ -122,8 +123,8 @@
             android:layout_below="@id/LL_View"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="@dimen/_20sdp"
-            android:text="login using social media"
-            android:fontFamily="@font/roboto_light"/>
+            android:fontFamily="@font/roboto_light"
+            android:text="login using social media" />
 
         <ImageView
             android:id="@+id/IV_Google"
