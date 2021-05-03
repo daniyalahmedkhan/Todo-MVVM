@@ -36,8 +36,10 @@ class Add_EditTaskFragment : Fragment(), DatePickerDialog.OnDateSetListener,
 
     companion object {
         private var listItem: ListItem? = null
-        fun newInstance(listItem: ListItem?): Add_EditTaskFragment {
+        private var title: String? = null
+        fun newInstance(listItem: ListItem?, title: String): Add_EditTaskFragment {
             this.listItem = listItem
+            this.title = title
             return Add_EditTaskFragment()
         }
     }
@@ -58,7 +60,7 @@ class Add_EditTaskFragment : Fragment(), DatePickerDialog.OnDateSetListener,
             postTodoItemViewModel.title.value = (listItem as EventItem).event
             postTodoItemViewModel.desc.value = (listItem as EventItem).desc
             postTodoItemViewModel.category.value = (listItem as EventItem).category
-         //   postTodoItemViewModel.dateTime.value = (listItem as EventItem).time
+            //   postTodoItemViewModel.dateTime.value = (listItem as EventItem).time
             postTodoItemViewModel.priority.value = (listItem as EventItem).priority.toInt()
         } else {
             postTodoItemViewModel.isAddTask = true
@@ -70,24 +72,8 @@ class Add_EditTaskFragment : Fragment(), DatePickerDialog.OnDateSetListener,
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        toolbar.setNavigationIcon(R.drawable.back)
-        toolbar.setTitle("Add Task")
-        toolbar.setNavigationOnClickListener {
-            requireActivity().getSupportFragmentManager().popBackStack();
-            openDetailFragment(HomeFragment.newInstance())
-        }
 
-
-        addTaskFragmentBinding.ETDateTime.setOnClickListener {
-            val calendar: Calendar = Calendar.getInstance()
-            val day = calendar.get(Calendar.DAY_OF_MONTH)
-            val month = calendar.get(Calendar.MONTH)
-            val year = calendar.get(Calendar.YEAR)
-            val datePickerDialog =
-                DatePickerDialog(requireActivity(), this, year, month, day)
-            datePickerDialog.show()
-
-        }
+        initialSetup()
 
         postTodoItemViewModel.itemState.observe(requireActivity(), androidx.lifecycle.Observer {
             when (it) {
@@ -135,11 +121,32 @@ class Add_EditTaskFragment : Fragment(), DatePickerDialog.OnDateSetListener,
 * Fragment Management
 * */
     private fun openDetailFragment(fragment: Fragment) {
-        requireActivity().supportFragmentManager.beginTransaction().replace(R.id.home_container, fragment)
+        requireActivity().supportFragmentManager.beginTransaction()
+            .replace(R.id.home_container, fragment)
             .addToBackStack(if (requireActivity().supportFragmentManager.backStackEntryCount == 0) fragment.tag else null)
             .commit()
     }
 
+    private fun initialSetup() {
+        toolbar.setNavigationIcon(R.drawable.back)
+        toolbar.setTitle(title)
+        toolbar.setNavigationOnClickListener {
+            requireActivity().getSupportFragmentManager().popBackStack();
+            openDetailFragment(HomeFragment.newInstance())
+        }
 
+        addTaskFragmentBinding.BTNLogin.setText(title?.split(" ")!!.toTypedArray()[0])
+
+        addTaskFragmentBinding.ETDateTime.setOnClickListener {
+            val calendar: Calendar = Calendar.getInstance()
+            val day = calendar.get(Calendar.DAY_OF_MONTH)
+            val month = calendar.get(Calendar.MONTH)
+            val year = calendar.get(Calendar.YEAR)
+            val datePickerDialog =
+                DatePickerDialog(requireActivity(), this, year, month, day)
+            datePickerDialog.show()
+
+        }
+    }
 
 }

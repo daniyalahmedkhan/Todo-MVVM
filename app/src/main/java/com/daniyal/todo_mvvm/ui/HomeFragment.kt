@@ -5,6 +5,7 @@ import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.SearchView
 import androidx.annotation.NonNull
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -104,13 +105,34 @@ class HomeFragment : Fragment() {
                         items,
                         requireActivity()
                     ) { itemDto: ListItem, position: Int ->
-                        openDetailFragment(Add_EditTaskFragment.newInstance((itemDto as EventItem)))
+                        openDetailFragment(
+                            Add_EditTaskFragment.newInstance(
+                                (itemDto as EventItem),
+                                "Edit Task"
+                            )
+                        )
 
                     }
                     binding.RVTodoItems.adapter = homeItemsAdapter
 
                 }
 
+            }
+
+        })
+
+        /*
+       * Search View in Toolbar to sort list items
+       * */
+        binding.itemSearch.setOnQueryTextListener(object : SearchView.OnQueryTextListener,
+            androidx.appcompat.widget.SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(p0: String?): Boolean {
+                return false
+            }
+
+            override fun onQueryTextChange(p0: String?): Boolean {
+                homeItemsAdapter.filter.filter(p0)
+                return false
             }
 
         })

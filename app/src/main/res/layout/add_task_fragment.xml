@@ -30,11 +30,13 @@
             android:hint="Add Task">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/ET_Title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/white"
+                android:fontFamily="@font/roboto_regular"
                 android:text="@={viewmodel.title}"
-                android:id="@+id/ET_Title"/>
+                android:textSize="@dimen/_12sdp" />
 
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -54,7 +56,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/white"
-                android:text="@={viewmodel.desc}" />
+                android:fontFamily="@font/roboto_regular"
+                android:text="@={viewmodel.desc}"
+                android:textSize="@dimen/_12sdp" />
 
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -74,7 +78,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/white"
-                android:text="@={viewmodel.category}" />
+                android:fontFamily="@font/roboto_regular"
+                android:text="@={viewmodel.category}"
+                android:textSize="@dimen/_12sdp" />
 
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -91,14 +97,15 @@
             android:hint="Pick Date &amp; Time">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/ET_DateTime"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/white"
-                android:text="@={viewmodel.dateTime}"
-                android:focusable="false"
                 android:clickable="false"
-                android:id="@+id/ET_DateTime"
-                />
+                android:focusable="false"
+                android:fontFamily="@font/roboto_regular"
+                android:text="@={viewmodel.dateTime}"
+                android:textSize="@dimen/_12sdp" />
 
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -114,8 +121,10 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/_15sdp"
             android:layout_marginTop="@dimen/_10sdp"
+            android:fontFamily="@font/roboto_medium"
             android:text="Priority"
-            android:textSize="@dimen/_15sdp"
+            android:textColor="@color/item_text"
+            android:textSize="@dimen/_13sdp"
             android:textStyle="bold" />
 
         <LinearLayout
@@ -131,30 +140,29 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/red_dot"
                 android:onClick="@{(view) -> viewmodel.getPriority(view, 0)}"
-                />
+                android:src="@drawable/red_dot" />
 
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/_10sdp"
-                android:src="@drawable/ic_tan_dot"
-                android:onClick="@{(view) -> viewmodel.getPriority(view, 1)}" />
+                android:onClick="@{(view) -> viewmodel.getPriority(view, 1)}"
+                android:src="@drawable/ic_tan_dot" />
 
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/_10sdp"
-                android:src="@drawable/ic_sky_dot"
-                android:onClick="@{(view) -> viewmodel.getPriority(view, 2)}"/>
+                android:onClick="@{(view) -> viewmodel.getPriority(view, 2)}"
+                android:src="@drawable/ic_sky_dot" />
 
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/_10sdp"
-                android:src="@drawable/ic_lime_dot"
-                android:onClick="@{(view) -> viewmodel.getPriority(view, 3)}" />
+                android:onClick="@{(view) -> viewmodel.getPriority(view, 3)}"
+                android:src="@drawable/ic_lime_dot" />
 
         </LinearLayout>
 
@@ -169,6 +177,7 @@
                 android:id="@+id/BTN_Login"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/roboto_medium"
                 android:onClick="@{viewmodel::validateFields}"
                 android:padding="@dimen/_15sdp"
                 android:text="Add" />

@@ -15,5 +15,11 @@
     <color name="background">#F6F6F8</color>
 
 
+    <!--    Priority-->
+    <color name="URGENT">#FC5565</color>
+    <color name="MEDIUM">#FA9B4A</color>
+    <color name="AVERAGE">#58BBF7</color>
+    <color name="LOW">#4CCB41</color>
+
 
 </resources>

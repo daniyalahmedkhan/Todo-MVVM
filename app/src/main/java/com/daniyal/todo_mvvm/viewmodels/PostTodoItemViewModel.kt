@@ -41,6 +41,7 @@ class PostTodoItemViewModel @ViewModelInject constructor(
 
     fun getPriority(view: View, value: Int) {
         priority.value = value
+        context.toast("${GeneralHelper.returnPriorityTag(value)} Selected").setGravity(Gravity.CENTER, 0, 0)
     }
 
     fun validateFields(view: View) {
@@ -67,7 +68,6 @@ class PostTodoItemViewModel @ViewModelInject constructor(
             )
         }
     }
-
 
 
     private fun postTodoItem(todoItemResponse: TodoItemResponse) {
@@ -107,7 +107,6 @@ class PostTodoItemViewModel @ViewModelInject constructor(
             }
         }
     }
-
 
 
 }

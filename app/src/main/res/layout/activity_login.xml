@@ -43,7 +43,8 @@
                 android:layout_margin="@dimen/_5sdp"
                 android:background="@null"
                 android:hint="Username"
-                android:text="@={viewmodel.username}" />
+                android:text="@={viewmodel.username}"
+                android:fontFamily="@font/roboto_light"/>
 
             <View
                 android:layout_width="match_parent"
@@ -58,7 +59,8 @@
                 android:layout_margin="@dimen/_5sdp"
                 android:background="@null"
                 android:hint="Password"
-                android:text="@={viewmodel.password}" />
+                android:text="@={viewmodel.password}"
+                android:fontFamily="@font/roboto_light"/>
 
         </LinearLayout>
 
@@ -73,7 +75,8 @@
             android:layout_marginRight="@dimen/_30sdp"
             android:onClick="@{viewmodel::validateFields}"
             android:padding="@dimen/_15sdp"
-            android:text="Login" />
+            android:text="Login"
+            android:fontFamily="@font/roboto_regular"/>
 
         <LinearLayout
             android:id="@+id/LL_View"
@@ -99,7 +102,8 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="OR" />
+                android:text="OR"
+                />
 
             <View
                 android:layout_width="0dp"
@@ -118,7 +122,8 @@
             android:layout_below="@id/LL_View"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="@dimen/_20sdp"
-            android:text="login using social media" />
+            android:text="login using social media"
+            android:fontFamily="@font/roboto_light"/>
 
         <ImageView
             android:id="@+id/IV_Google"

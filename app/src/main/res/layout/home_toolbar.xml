@@ -13,12 +13,14 @@
         android:baselineAligned="false"
         android:orientation="horizontal"
         android:padding="@dimen/_10sdp"
-        android:weightSum="4">
+        android:weightSum="4"
+        >
 
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="0.7">
+            android:layout_weight="0.7"
+            android:layout_gravity="center">
 
             <ImageView
                 android:layout_width="wrap_content"
@@ -78,22 +80,5 @@
 
 
     </LinearLayout>
-
-
-    <androidx.appcompat.widget.SearchView
-        android:id="@+id/item_search"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/LL_ToolbarAction"
-        android:layout_margin="@dimen/_10sdp"
-        android:background="@color/white"
-        android:focusable="false"
-        android:layoutDirection="rtl"
-        android:textCursorDrawable="@null"
-        app:defaultQueryHint="Search Item by Name"
-        app:iconifiedByDefault="false"
-        app:queryBackground="@null"
-        app:queryHint="Search Item by Name"
-        app:searchIcon="@drawable/search_icon" />
 
 </RelativeLayout>

@@ -17,18 +17,18 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/txt_header"
-        android:gravity="right">
+        android:gravity="right"
+        android:background="@color/white">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/date_background"
             android:gravity="center"
-            android:paddingTop="@dimen/_2sdp"
-            android:paddingBottom="@dimen/_2sdp"
             android:text="Today"
             android:textColor="@color/white"
-            android:textSize="@dimen/_10sdp" />
+            android:textSize="@dimen/_10sdp"
+            android:fontFamily="@font/roboto_regular"/>
 
 
     </LinearLayout>

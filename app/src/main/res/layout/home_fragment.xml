@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<layout>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
@@ -11,7 +11,33 @@
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="@color/background">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/toolbar_color">
+
+
+        <androidx.appcompat.widget.SearchView
+            android:id="@+id/item_search"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/_10sdp"
+            android:background="@color/white"
+            android:focusable="false"
+            android:layoutDirection="rtl"
+            android:textCursorDrawable="@null"
+            app:defaultQueryHint="Search Item by Name"
+            app:iconifiedByDefault="false"
+            app:queryBackground="@null"
+            app:queryHint="Search Item by Name"
+            app:searchIcon="@drawable/search_icon" />
+
+    </RelativeLayout>
+
 
 
         <androidx.recyclerview.widget.RecyclerView

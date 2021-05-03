@@ -9,9 +9,6 @@ import android.widget.ImageView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.daniyal.todo_mvvm.R
-import com.daniyal.todo_mvvm.ui.HomeActivity
-import org.jetbrains.anko.intentFor
-import org.jetbrains.anko.newTask
 import org.json.JSONObject
 import java.text.DateFormat
 import java.text.ParseException
@@ -74,7 +71,7 @@ class GeneralHelper {
             imm.hideSoftInputFromWindow(view.getWindowToken(), 0)
         }
 
-        fun dateTimeFormatter(int: Int) : String{
+        fun dateTimeFormatter(int: Int): String {
             var str: String = ""
             str = if (int < 10) {
                 "0$int"
@@ -85,7 +82,7 @@ class GeneralHelper {
             return str
         }
 
-        fun convertDateIntoTimeStamp(dateTime: String) : Long{
+        fun convertDateIntoTimeStamp(dateTime: String): Long {
 //            try {
 //                val formatter: SimpleDateFormat = SimpleDateFormat("dd/MM/yyyy hh:mm")
 //                val date = formatter.parse(dateTime) as Date
@@ -100,7 +97,43 @@ class GeneralHelper {
             return date.getTime()
         }
 
+        fun returnPriority(int: Int): Int {
+            when (int) {
+                0 -> {
+                    return R.color.URGENT
+                }
+                1 -> {
+                    return R.color.MEDIUM
+                }
+                2 -> {
+                    return R.color.AVERAGE
+                }
+                3 -> {
+                    return R.color.LOW
+                }
 
+            }
+            return 0
+        }
+
+        fun returnPriorityTag(int: Int): String {
+            when (int) {
+                0 -> {
+                    return "Urgent"
+                }
+                1 -> {
+                    return "Medium"
+                }
+                2 -> {
+                    return "Average"
+                }
+                3 -> {
+                    return "Low"
+                }
+
+            }
+            return "None"
+        }
 
     }
 }

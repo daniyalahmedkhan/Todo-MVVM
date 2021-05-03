@@ -1,7 +1,13 @@
 package com.daniyal.todo_mvvm.app
 
 import android.app.Application
+import android.content.Context
 import android.content.ContextWrapper
+import android.content.res.Configuration
+import android.util.DisplayMetrics
+import android.view.WindowManager
+import androidx.multidex.MultiDex
+import com.daniyal.todo_mvvm.utilities.GeneralHelper
 import com.daniyal.todo_mvvm.utilities.PrefsHelper
 import dagger.hilt.android.HiltAndroidApp
 
@@ -18,5 +24,8 @@ class MainApplication : Application(){
             .setPrefsName(packageName)
             .setUseDefaultSharedPreference(true)
             .build()
+
+        MultiDex.install(this)
     }
+
 }

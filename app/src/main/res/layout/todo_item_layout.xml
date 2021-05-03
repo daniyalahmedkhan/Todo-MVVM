@@ -2,8 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@color/white">
+    android:layout_height="wrap_content">
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
@@ -43,7 +42,10 @@
                         android:layout_height="wrap_content"
                         android:text="10:00"
                         android:gravity="center"
-                        android:id="@+id/TV_Time"/>
+                        android:textColor="@color/item_text"
+                        android:id="@+id/TV_Time"
+                        android:textSize="@dimen/_12sdp"
+                        android:fontFamily="@font/roboto_medium"/>
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -51,7 +53,9 @@
                         android:text="AM"
                         android:textColor="@color/item_text"
                         android:textStyle="bold"
-                        android:id="@+id/TV_Midday"/>
+                        android:id="@+id/TV_Midday"
+                        android:textSize="@dimen/_12sdp"
+                        android:fontFamily="@font/roboto_bold"/>
 
                 </LinearLayout>
 
@@ -66,13 +70,17 @@
                         android:layout_height="wrap_content"
                         android:text="Meeting with Client"
                         android:textColor="@color/item_text"
-                        android:id="@+id/TV_Title"/>
+                        android:id="@+id/TV_Title"
+                        android:fontFamily="@font/roboto_regular"
+                        android:textSize="@dimen/_12sdp"/>
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Official"
-                        android:id="@+id/TV_Desc"/>
+                        android:id="@+id/TV_Desc"
+                        android:textSize="@dimen/_11sdp"
+                        android:fontFamily="@font/roboto_light"/>
 
 
                 </LinearLayout>

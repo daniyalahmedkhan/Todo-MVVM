@@ -5,17 +5,30 @@ import android.graphics.PorterDuff
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Filter
+import android.widget.Filterable
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.daniyal.todo_mvvm.R
+import com.daniyal.todo_mvvm.utilities.GeneralHelper
+import java.util.*
+import kotlin.collections.ArrayList
 
 
-class HomeItemsAdapter constructor(val items: List<ListItem> , val context: Context ,
-                                   val clickListener: (ListItem, Int) -> Unit): RecyclerView.Adapter<HomeItemsAdapter.ViewHolder>() {
+class HomeItemsAdapter constructor(
+    val items: List<ListItem>, val context: Context,
+    val clickListener: (ListItem, Int) -> Unit
+) : RecyclerView.Adapter<HomeItemsAdapter.ViewHolder>(), Filterable {
 
+
+    var itemListFilter: List<ListItem> = ArrayList<ListItem>()
+
+    init {
+        itemListFilter = items
+    }
 
     private class HeaderViewHolder constructor(itemView: View) : ViewHolder(itemView) {
         var txt_header: TextView
@@ -62,11 +75,12 @@ class HomeItemsAdapter constructor(val items: List<ListItem> , val context: Cont
 
 
     override fun getItemCount(): Int {
-        return items.size
+//        return items.size
+        return itemListFilter.size
     }
 
     override fun getItemViewType(position: Int): Int {
-        return items[position].type
+        return itemListFilter[position].type
     }
 
     open class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -77,20 +91,21 @@ class HomeItemsAdapter constructor(val items: List<ListItem> , val context: Cont
         val viewType = getItemViewType(position)
         when (viewType) {
             ListItem.TYPE_HEADER -> {
-                val header = items[position] as HeaderItem
+                val header = itemListFilter[position] as HeaderItem
                 val holder = holder as HeaderViewHolder
             }
             ListItem.TYPE_EVENT -> {
-                val event = items[position] as EventItem
+                //val event = items[position] as EventItem
+                val event = itemListFilter
                 val holder = holder as EventViewHolder
-                holder.txt_title.text = event.event
-                holder.txt_desc.text = event.desc
-                holder.txt_time.text = event.hour.split(" ").toTypedArray()[0]
-                holder.txt_midday.text = event.hour.split(" ").toTypedArray()[1]
+                holder.txt_title.text = (event[position] as EventItem).event
+                holder.txt_desc.text =  (event[position] as EventItem).desc
+                holder.txt_time.text =  (event[position] as EventItem).hour.split(" ").toTypedArray()[0]
+                holder.txt_midday.text =  (event[position] as EventItem).hour.split(" ").toTypedArray()[1]
                 holder.IV_Priority.setColorFilter(
                     ContextCompat.getColor(
                         context!!,
-                        R.color.background
+                        GeneralHelper.returnPriority( (event[position] as EventItem).priority.toInt())
                     ), PorterDuff.Mode.SRC_IN
                 )
 
@@ -103,6 +118,39 @@ class HomeItemsAdapter constructor(val items: List<ListItem> , val context: Cont
 
     }
 
+    override fun getFilter(): Filter {
+        return object : Filter() {
+            override fun performFiltering(constraint: CharSequence?): FilterResults {
+                val charSearch = constraint.toString()
+                if (charSearch.isEmpty()) {
+                    itemListFilter = items
+                } else {
+                    val resultList = ArrayList<ListItem>()
+                    for (row in items.indices) {
+                        if (items[row].type != 0){
+                            if ((items[row] as EventItem).event?.toLowerCase(Locale.ROOT)!!.contains(charSearch.toLowerCase(Locale.ROOT))
+                            ) {
+                                resultList.add((items[row] as EventItem))
+                            }
+                        }else{
+                            resultList.add((items[row] as HeaderItem))
+                        }
+                    }
+                    itemListFilter = resultList
+                }
+                val filterResults = FilterResults()
+                filterResults.values = itemListFilter
+                return filterResults
+            }
+
+            @Suppress("UNCHECKED_CAST")
+            override fun publishResults(constraint: CharSequence?, results: FilterResults?) {
+                itemListFilter = results?.values as ArrayList<ListItem>
+                notifyDataSetChanged()
+            }
+
+        }
+    }
 
 
 }

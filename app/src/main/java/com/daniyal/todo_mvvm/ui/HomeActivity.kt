@@ -75,7 +75,7 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private fun openTaskFragment() {
         val fm: FragmentManager = supportFragmentManager
         val fragment: HomeFragment = fm.findFragmentById(R.id.home_container) as HomeFragment
-        fragment.openDetailFragment(Add_EditTaskFragment.newInstance(null))
+        fragment.openDetailFragment(Add_EditTaskFragment.newInstance(null, "Add Task"))
     }
 
 
